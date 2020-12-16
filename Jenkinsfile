@@ -10,9 +10,11 @@ pipeline {
                     echo params.herramienta
 
                     if (params.herramienta == 'gradle') {
-                        load 'gradle.groovy'
+                        def ejecucion = load 'gradle.groovy'
+                        ejecucion.call()
                 }else {
-                     load 'maven.groovy'
+                     def ejecucion = load 'maven.groovy'
+                        ejecucion.call()
                     }
                 }
             }
