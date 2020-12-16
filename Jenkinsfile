@@ -10,11 +10,10 @@ pipeline {
                 if(params.herramienta== 'gradle'){
 
                 }else{
-                    
+
                 }
             }
             
-            }
         }
     }
 }
