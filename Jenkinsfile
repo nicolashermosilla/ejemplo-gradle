@@ -17,8 +17,8 @@ pipeline {
                             }
                     }
                     stage("Run") {
-                        sh "nohup ./gradle bootRun &"
-                        sleep 50
+                        sh "nohup bash gradle bootRun &"
+                        sleep 30
                     }
                     stage("Rest") {
                         sh "curl -X GET localhost:8085/rest/mscovid/test?msg=testing"
