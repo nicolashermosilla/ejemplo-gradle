@@ -7,46 +7,40 @@
 def call(){
   
 
-    stages {
+   
+           
             stage("Build") {
                 steps {
-                    dir("/Users/nicolas/code/estudios/usach/unidad3/ejemplo-maven-main"){
-                    sh "./mvnw clean compile -e"
-                        
-                    }
                     
+                    sh "./mvnw clean compile -e"
                 }
             }
             stage("Test") {
                 steps {
-                    dir("/Users/nicolas/code/estudios/usach/unidad3/ejemplo-maven-main"){
+                   
                     sh "./mvnw clean test -e"
-                        
-                    }
                 }
             }
             stage("Jar") {
                 steps {
-                    dir("/Users/nicolas/code/estudios/usach/unidad3/ejemplo-maven-main"){
+                    
                     sh "./mvnw clean package -e"
-                        
-                    }
                 }
             }
-            stage("Run Jar") {
+
+            stage('SonarQube') {
+                 steps {
+                     withSonarQubeEnv(installationName: 'sonar') {
+                     sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                 }
+                 }
+             }
+            stage("Upload Nexus") {
                 steps {
-                    dir("/Users/nicolas/code/estudios/usach/unidad3/ejemplo-maven-main"){
-                    sh "nohup bash mvnw spring-boot:run &"
-                    sh "sleep 10"
+                    
+                    nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'test-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: 'jar', filePath: '/Users/nicolas/code/estudios/usach/unidad3/forks/ejemplo-maven/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+
                     }
-                }
-            }
-             stage("Test app") {
-                steps {
-                    dir("/Users/nicolas/code/estudios/usach/unidad3/ejemplo-maven-main"){
-                    sh "curl -X GET localhost:8081/rest/mscovid/test?msg=testing"
-                    }
-                }
             }
   
 
