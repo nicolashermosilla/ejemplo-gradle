@@ -22,10 +22,10 @@ pipeline {
     }
     post {
         success {
-            echo 'ok'
+            slackSend message: 'ok'
         }
         failure {
-            echo 'error'
+            slackSend message: 'error'
         }
     }
 }
