@@ -7,6 +7,7 @@
 def call(){
   
         stage("Build & test") {
+          
             sh "./gradlew clean build"
         }
         stage("Sonar") {
